@@ -40,12 +40,9 @@ function Purchase_Book(book, discount, tax, stock, purchase){
             if(purchase != null && books[book].bookStock > 0){
                 books[book].bookStock = books[book].bookStock - 1;
             }else{
-                console.log("no purchase has been made, or purchase > book stock");
+                console.log("stock depleted");
                 break;
             }
-        }
-        if(books[book].bookStock > 0){
-            console.log("book(s) in stock: "+books[book].bookStock);
         }
 
         if(purchase != null && purchase > 1){
@@ -60,6 +57,7 @@ function Purchase_Book(book, discount, tax, stock, purchase){
         BookMessage(book, price, discountValue, priceAfterDiscount, taxValue, priceTax, priceTaxDiscount, purchase);
 
 
+
     }else{
         console.log("Book name is not found")
     }
@@ -68,6 +66,7 @@ function Purchase_Book(book, discount, tax, stock, purchase){
 
 
 function BookMessage(book, price, discountValue, priceAfterDiscount, taxValue, priceTax, priceTaxDiscount, purchase){
+    console.log("==========================");
     console.log("General Information")
     console.log("==========================");
     console.log("Book name: " + book);
@@ -79,4 +78,12 @@ function BookMessage(book, price, discountValue, priceAfterDiscount, taxValue, p
     console.log("amount of tax: " + taxValue);
     console.log("price with tax, without discount: " + priceTax);
     console.log("price with tax & discount:" + priceTaxDiscount);
+    console.log("==========================");
+
+    if(books[book].bookStock > 0){
+        console.log("book(s) in stock: "+books[book].bookStock);
+    }else{
+        console.log("book(s) in stock: 0");
+    }
+    console.log("==========================");
 }
