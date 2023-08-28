@@ -75,7 +75,7 @@ function date(creditDuration){
     let monthInt = date.getMonth();
     let year = date.getFullYear();
     
-    date.setDate(30);
+    date.setDate(31);
     var lastDayOfMonth = new Date(date.getFullYear(), date.getMonth()+1, 0);
     var lastDayDate = date.getDate();
 
