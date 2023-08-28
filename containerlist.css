@@ -1,0 +1,23 @@
+*{
+    color: white;
+}
+
+.column{
+    float: left;
+    width: 50%;
+    overflow-y: scroll; height:400px;
+}
+
+.row{
+    content: "";
+    display: table;
+    clear: both;
+}
+
+.container{
+    margin: 5px 25px 5px 25px;
+    padding: 0px 5px 0px 5px;
+    
+    background-color: darkslategrey;
+    border: 5px double olivedrab;
+}
