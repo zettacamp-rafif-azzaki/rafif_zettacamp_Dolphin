@@ -1,0 +1,272 @@
+/* Start of Navbar */
+.nav-container{
+    width: 100%;
+    margin: 0;
+    justify-content: center;
+} 
+.nav {
+    list-style: none;
+    font-weight: bold;
+    margin-bottom: 10px;
+
+    float: left; /* Clear floats */
+    width: 100%;
+
+    position: relative;
+    z-index: 5;
+    
+}
+.nav li {
+    float: left;
+    margin-right: 10px;
+    position: relative;
+}
+.nav a {
+    display: block;
+    padding: 5px;
+    color: #fff;
+    background-color: #333;
+    text-decoration: none;
+}
+.nav a:hover {
+    color: #fff;
+    background-color: #6b0c36;
+    text-decoration: underline;
+}
+
+/*--- DROPDOWN ---*/
+.nav ul {
+    /* background-color: #fff;  */
+    /* Adding a background makes the dropdown work properly in IE7+. Make this as close to your page's background as possible (i.e. white page == white background). */
+    /* background: rgba(255,255,255,0); */
+     /* But! Let's make the background fully transparent where we can, we don't actually want to see it if we can help it... */
+    list-style: none;
+    position: absolute;
+    left: -9999px; /* Hide off-screen when not needed (this is more accessible than display: none;) */
+}
+.nav ul li {
+    padding-top: 1px;
+     /* Introducing a padding between the li and the a give the illusion spaced items */
+    float: none;
+}
+.nav ul a {
+    white-space: nowrap; /* Stop text wrapping and creating multi-line dropdown items */
+}
+.nav li:hover ul { /* Display the dropdown on hover */
+    left: 0; /* Bring back on-screen when needed */
+}
+.nav li:hover a { /* These create persistent hover states, meaning the top-most link stays 'hovered' even when your cursor has moved down the list. */
+    background-color: #6b0c36;
+    text-decoration: underline;
+}
+.nav li:hover ul a { /* The persistent hover state does however create a global style for links even before they're hovered. Here we undo these effects. */
+    text-decoration: none;
+}
+.nav li:hover ul li a:hover { /* Here we define the most explicit hover states--what happens when you hover each individual link. */
+    background-color: #333;
+}
+/* End of Navbar */
+
+* {
+	box-sizing: border-box;
+	margin: 0;
+	padding: 0;
+}
+
+body {
+    background-color: #e3e8ea;
+	font-family: 'Open Sans', sans-serif;
+	line-height: 1.5;
+}
+
+a {
+	text-decoration: none;
+	color: var(--primary-color);
+}
+
+h1 {
+	font-weight: 300;
+	font-size: 60px;
+	line-height: 1.2;
+	margin-bottom: 15px;
+}
+
+.showcase {
+	height: 100vh;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	text-align: center;
+	color: #fff;
+	padding: 0 20px;
+}
+
+.video-container {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	overflow: hidden;
+	background: var(--primary-color) url('') no-repeat center
+		center/cover;
+}
+
+.video-container video {
+	min-width: 100%;
+	min-height: 100%;
+  position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	object-fit: cover;
+}
+
+.video-container:after {
+	content: '';
+	z-index: 1;
+	height: 100%;
+	width: 100%;
+	top: 0;
+	left: 0;
+	background: rgba(0, 0, 0, 0.5);
+	position: absolute;
+}
+
+.content {
+	z-index: 2;
+}
+
+.btn {
+	display: inline-block;
+	padding: 10px 30px;
+	background: var(--primary-color);
+	color: #fff;
+	border-radius: 5px;
+	border: solid #fff 1px;
+	margin-top: 25px;
+	opacity: 0.7;
+}
+
+.btn:hover {
+	transform: scale(0.98);
+}
+
+.text-container{
+    text-align: center;
+    margin: 2rem 20rem;
+}
+
+
+
+
+*,
+*:after,
+*:before {
+    box-sizing: border-box;
+    font-family: 'Inter', sans-serif;
+}
+
+body{
+    border-width: 1em 1em 1em 1em;
+}
+
+.container{
+    padding: 2rem;
+    margin: 2vw 2vh;
+}
+
+
+.grid-container {
+    display: flex;
+    flex-wrap:wrap;
+    justify-content: space-evenly;
+}
+
+.grid-item{
+    flex-grow: 1;
+    width: 33%;
+}
+
+
+footer{
+    padding: 3px;
+    background-color: #333;
+    color: #e3e8ea;
+    font-size: 1em;
+    text-align: center;
+}
+
+
+
+/* start of card */
+.card{
+    display: flex;
+    flex-direction: column;
+    max-width: 100%;
+    background-color: #bccad0;
+    box-shadow: 0 5px 10px 0 rgba(red, green, blue, 0.5);
+    border-style: solid;
+    border-radius: 10px;
+    border-color: #9ba8ae;
+    overflow: hidden;
+    margin: 1rem;
+    padding: 1rem;
+    height: 40rem;
+}
+
+.card-img img{
+    position: relative;
+    width: 100%;
+    object-fit: cover;
+    object-position: 50% 70%;
+}
+
+.card-title{
+    height: 3.5rem;
+    line-height: normal;
+    font-weight: 700;
+    margin-bottom: 2rem;
+}
+
+.card-intro{
+    overflow-y: scroll;
+    height: 10rem;
+}
+/* end of card */
+
+
+
+
+.grid-container {
+    display: flex;
+    flex-wrap:wrap;
+    justify-content: space-evenly;
+}
+
+.grid-item{
+    flex-grow: 1;
+    width: 33.3%;
+}
+
+.nav-background{
+    background-color: #333;
+    font-size: 1.5em;
+    margin: 0;
+    color: transparent;
+    user-select: none;
+    padding: 1rem;
+    height: 34px;
+    position: sticky;
+    z-index: 4;
+}
+
+.center{
+    text-align: center;
+}
+
+.mp0{
+    margin: 0px;
+    padding: 0px;
+    display: inline-block;
+}
