@@ -1,0 +1,94 @@
+*,
+*:after,
+*:before {
+    box-sizing: border-box;
+    font-family: 'Inter', sans-serif;
+    color: red;
+}
+
+body{
+    
+    background-color: beige;
+    border-width: 1em 1em 1em 1em;
+}
+h1{
+    background-color: black;
+    font-size: 1.5em;
+    margin: 0;
+}
+
+.container{
+    padding: 2rem;
+    margin: 2vw 2vh;
+}
+
+.grid-container {
+    display: flex;
+    flex-wrap:wrap;
+    justify-content: space-evenly;
+}
+
+.grid-item{
+    flex-grow: 1;
+    width: 33%;
+}
+
+
+footer{
+    background-color: black;
+    font-size: 1.5em;
+}
+
+
+
+/* start of card */
+.card{
+    display: flex;
+    flex-direction: column;
+    max-width: 100%;
+    background-color: bisque;
+    box-shadow: 0 5px 10px 0 rgba(red, green, blue, 0.15);
+    border-radius: 10px;
+    overflow: hidden;
+    margin: 1rem;
+    padding: 1rem;
+    height: 40rem;
+}
+
+.card-img img{
+    position: relative;
+    width: 100%;
+    object-fit: cover;
+    object-position: 50% 70%;
+}
+
+.card-title{
+    height: 3.5rem;
+    line-height: normal;
+    font-weight: 700;
+}
+
+.card-intro{
+    overflow-y: scroll;
+    height: 10rem;
+}
+/* end of card */
+
+
+
+
+.mb0{
+    margin-bottom: 0px;
+}
+.mb1{
+    margin-bottom: 1rem;
+}
+.pt1{
+    padding-top: 1rem;
+}
+.p0{
+    padding: 0;
+}
+.center{
+    text-align: center;
+}
