@@ -1,0 +1,18 @@
+
+monospace is a font that has the same weight per character
+
+element -> made from tags
+
+in web -> element has a property
+
+tags -> has an attribute
++++++++++++++++++++++++++++++++++++++
+
+&nbst
+
+<b>	: bold
+<strong>: bold, but using by search engine to emphasis something
+<i>	: italic
+<em>	: italic, but it's used on accessibility to emphasis, so when the text to speech is used, the voice will like emphasis on it
+<sup>	: pangkat atas
+<sub>	: pangkat bawah

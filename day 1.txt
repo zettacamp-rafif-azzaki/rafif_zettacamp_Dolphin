@@ -1,0 +1,21 @@
+ada perbedaan antara software dev dan system dev mindset
+nanti ada pelajaran manage waktu + project
+
+coding d indonesia biasanya apalan padahal itu logic
+
+minimum respect hidupin video pas online
+
+
+
+
+
+
+what do you learn from the video? 
+is there something that could be used again on the video?
+
+vid 1: introduction web as folder
+vid 2: HTML can be made by any note taking app
+vid 3: HTML structures
+vid 4: using "&" to show a special character and a brief explanation of case sensitive
+vid 5: an introduction of tags, and definition of element and attribute
+vid 6: you can nest a tags
