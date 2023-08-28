@@ -1,0 +1,60 @@
+*,
+*:after,
+*:before {
+    box-sizing: border-box;
+    font-family: 'Inter', sans-serif;
+    color: black;
+
+}
+
+body{
+    
+    background-color: beige;
+    border-width: 1em 1em 1em 1em
+}
+
+
+.column{
+    float: left;
+    width: 25%;
+}
+
+.row:after {
+    content: "";
+    display: table;
+    clear: both;
+}
+
+
+.card{
+    display: flex;
+    flex-direction: column;
+    max-width: 100%;
+    background-color: bisque;
+    box-shadow: 0 5px 10px 0 rgba(red, green, blue, 0.15);
+    border-radius: 10px;
+    overflow: hidden;
+    margin: 1rem;
+    padding: 1rem;
+}
+
+.card-img img{
+    position: relative;
+    width: 100%;
+    object-fit: cover;
+    height: 200px;
+    object-position: 50% 90%;
+}
+
+.card-title{
+    line-height: normal;
+    font-weight: 700;
+}
+
+.container{
+    margin: 5px 25px 5px 25px;
+    padding: 0px 5px 0px 5px;
+    
+    background-color: darkslategrey;
+    border: 5px double olivedrab;
+}
