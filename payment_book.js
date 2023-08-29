@@ -1,5 +1,7 @@
 // Const dikeluarkan dari fungsi pada code ini
 // console.log(`${lastDayDate} ${ months[(monthInt + i)%12]} ${year}`);
+// var arrayObj = arrayObj.filter((obj) => {obj.test === 'a';})
+
 const books ={
     Everlost:{
         author : "Neal Shusterman",
@@ -18,7 +20,7 @@ const books ={
     }
 };
 
-Purchase_Book("Everlost", 25, 3, 10, 5, 25);
+Purchase_Book("Everlost", 25, 3, 10, 5, 7);
 function Purchase_Book(book, discount, tax, stock, purchase, creditDuration){
 
     let isOnLibrary = books.hasOwnProperty(book);
@@ -54,7 +56,6 @@ function Purchase_Book(book, discount, tax, stock, purchase, creditDuration){
             taxValue = taxValue * purchase;
             priceTax = price + +taxValue;
             priceTaxDiscount = priceTax - discountValue;
-            
         }
 
         BookMessage(book, price, discountValue, priceAfterDiscount, taxValue, priceTax, priceTaxDiscount, purchase);
@@ -66,10 +67,9 @@ function Purchase_Book(book, discount, tax, stock, purchase, creditDuration){
 }
 
 function date(creditDuration, priceTaxDiscount){
+    
+    //date area====================================================================
     let dateArray = [];
-    let dateArray2 = [];
-    let dateObj = {};
-
 
     const months = ["January", "February", "March", "April", "May", "June", "July",
      "August", "September", "October", "November", "December"];
@@ -82,35 +82,33 @@ function date(creditDuration, priceTaxDiscount){
     date.setDate(31);
     var lastDayOfMonth = new Date(date.getFullYear(), date.getMonth()+1, 0);
     var lastDayDate = date.getDate();
-    priceTaxDiscount = priceTaxDiscount/creditDuration;
-
     let string;
+    //end of date area====================================================================
 
-    // for(i=1;i<=creditDuration;i++){
-    //     if(date.getDate() > lastDayOfMonth.getDate()){
-    //         //assign last day of the month of that year
-    //         lastDayDate = lastDayOfMonth.getDate();
-    //     }else{
-    //         //assign our current date
-    //         lastDayDate = date.getDate();
-    //     }
-        
-    //     string = lastDayDate + " " + months[(monthInt + i)%12] + " " + year;
-    //     // string =toString(`${lastDayDate} ${ months[(monthInt + i)%12]} ${year}`);
-        
+    let priceArray = [];
+    let a = priceTaxDiscount;
 
-    //     dateArray.push({"dueDate" : string, priceTaxDiscount});
-    //     if((monthInt + i + 1)%12 == 0){
-    //         year = year + 1;
-    //     }
-    //     lastDayOfMonth = new Date(year, ((monthInt + i)%12)+2, 0);
-    // }
 
+    //push
     for(i=1;i<=creditDuration;i++){
         dateArray.push(i);
+        priceArray.push(priceTaxDiscount);
     }
 
-    dateArray.map((i) => {
+
+    //calculate price
+    priceArray.forEach((value, index) => {
+        priceTaxDiscount = priceTaxDiscount-(a/creditDuration);
+        
+        priceArray[index] = Math.floor(priceTaxDiscount);
+        if(Math.floor(priceTaxDiscount) < 0){
+            priceArray[index - 1] = priceArray[index - 1] + (-1 * Math.floor(priceTaxDiscount));
+            priceArray[index] = 0;
+        }
+    });
+
+    //calculate index
+    dateArray.map((i, index) => {
         if(date.getDate() > lastDayOfMonth.getDate()){
             //assign last day of the month of that year
             lastDayDate = lastDayOfMonth.getDate();
@@ -120,10 +118,9 @@ function date(creditDuration, priceTaxDiscount){
         }
         
         string = lastDayDate + " " + months[(monthInt + i)%12] + " " + year;
-        // string =toString(`${lastDayDate} ${ months[(monthInt + i)%12]} ${year}`);
         
-
-        dateArray.push({"dueDate" : string, "finalPrice" : priceTaxDiscount});
+        dateArray[index] = {"dueDate" : string, "dueCredit" : priceArray[index]};
+        
         if((monthInt + i + 1)%12 == 0){
             year = year + 1;
         }
@@ -136,6 +133,7 @@ function date(creditDuration, priceTaxDiscount){
     console.log(dateArray);
     console.log("==========================");
 }
+
 
 function BookMessage(book, price, discountValue, priceAfterDiscount, taxValue, priceTax, priceTaxDiscount, purchase){
     console.log("General Information")
