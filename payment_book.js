@@ -1,4 +1,5 @@
 // Const dikeluarkan dari fungsi pada code ini
+// console.log(`${lastDayDate} ${ months[(monthInt + i)%12]} ${year}`);
 const books ={
     Everlost:{
         author : "Neal Shusterman",
@@ -57,15 +58,18 @@ function Purchase_Book(book, discount, tax, stock, purchase, creditDuration){
         }
 
         BookMessage(book, price, discountValue, priceAfterDiscount, taxValue, priceTax, priceTaxDiscount, purchase);
-        date(creditDuration);
+        date(creditDuration, priceTaxDiscount);
 
     }else{
         console.log("Book name is not found")
     }
 }
 
-function date(creditDuration){
+function date(creditDuration, priceTaxDiscount){
     let dateArray = [];
+    let dateArray2 = [];
+    let dateObj = {};
+
 
     const months = ["January", "February", "March", "April", "May", "June", "July",
      "August", "September", "October", "November", "December"];
@@ -78,11 +82,35 @@ function date(creditDuration){
     date.setDate(31);
     var lastDayOfMonth = new Date(date.getFullYear(), date.getMonth()+1, 0);
     var lastDayDate = date.getDate();
+    priceTaxDiscount = priceTaxDiscount/creditDuration;
 
-    // console.log(lastDayOfMonth);
+    let string;
+
+    // for(i=1;i<=creditDuration;i++){
+    //     if(date.getDate() > lastDayOfMonth.getDate()){
+    //         //assign last day of the month of that year
+    //         lastDayDate = lastDayOfMonth.getDate();
+    //     }else{
+    //         //assign our current date
+    //         lastDayDate = date.getDate();
+    //     }
+        
+    //     string = lastDayDate + " " + months[(monthInt + i)%12] + " " + year;
+    //     // string =toString(`${lastDayDate} ${ months[(monthInt + i)%12]} ${year}`);
+        
+
+    //     dateArray.push({"dueDate" : string, priceTaxDiscount});
+    //     if((monthInt + i + 1)%12 == 0){
+    //         year = year + 1;
+    //     }
+    //     lastDayOfMonth = new Date(year, ((monthInt + i)%12)+2, 0);
+    // }
 
     for(i=1;i<=creditDuration;i++){
-        
+        dateArray.push(i);
+    }
+
+    dateArray.map((i) => {
         if(date.getDate() > lastDayOfMonth.getDate()){
             //assign last day of the month of that year
             lastDayDate = lastDayOfMonth.getDate();
@@ -90,14 +118,17 @@ function date(creditDuration){
             //assign our current date
             lastDayDate = date.getDate();
         }
+        
+        string = lastDayDate + " " + months[(monthInt + i)%12] + " " + year;
+        // string =toString(`${lastDayDate} ${ months[(monthInt + i)%12]} ${year}`);
+        
 
-        dateArray.push(lastDayDate + " " + months[(monthInt + i)%12] + " " + year);
+        dateArray.push({"dueDate" : string, "finalPrice" : priceTaxDiscount});
         if((monthInt + i + 1)%12 == 0){
             year = year + 1;
         }
         lastDayOfMonth = new Date(year, ((monthInt + i)%12)+2, 0);
-
-    }
+    });
 
     console.log("==========================");
     console.log("due date: ");
