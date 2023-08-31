@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <link rel="stylesheet" href="style.css">
+        <title>Book Storage</title>
+    </head>
+    <body>
+        <h1>Book</h1>
+        <a href="newBook.html">New book</a>
+        <table>
+            <thead>
+              <tr>
+                <th>name</th>
+                <th>total count</th>
+                <th>author</th>
+                <th>description</th>
+                <th>Add</th>
+              </tr>
+            </thead>
+            <tr>
+                <td><input type="text" id="name" name="name"></td>
+                <td><input type="text" id="total_count" name="total_count"></td>
+                <td><input type="text" id="author" name="author"></td>
+                <td><input type="text" id="description" name="description"></td>
+                <td><button onclick="ButtonToLocalStorage()">Add</button></td>
+            </tr>
+          </table>
+        <br><br>
+        <table id="myTable">
+            <thead>
+              <tr>
+                <th>name</th>
+                <th>total count</th>
+                <th>author</th>
+                <th>description</th>
+                <th>edit</th>
+                <th>delete</th>
+              </tr>
+            </thead>
+            <tbody id="testBody"></tbody>
+          </table>
+          <script>
+            const items1 = [
+                { name: "Everlost", total_count: "5", author: "Neal Shusterman", description: "" },
+                { name: "Harry Potter and the Philosopher's Stone", total_count: "10", author: "J. K. Rowling", description: "The first installment of Harry Potter" },
+            ];
+            const items2 = [
+                { name: "Book1", total_count: "36", author: "AAA", description: "" },
+                { name: "Book2", total_count: "18", author: "BBB", description: "" },
+            ];
+
+            
+
+            
+
+            let globalTableData = [];
+            function SetTableData(items) {
+                globalTableData = GetTableData();
+                if(globalTableData == null){
+                    globalTableData = [];
+                }
+                    
+                
+                items.forEach( item => {
+                    globalTableData.push({name: item.name, total_count: item.total_count, author: item.author, description: item.description});
+                });
+                localStorage.setItem("BookData", JSON.stringify(globalTableData));
+                console.log("set data "+globalTableData);
+                
+                // console.log(globalTableData);
+            }
+
+            function GetTableData(){
+                let tableData = [];
+                tableData = JSON.parse(localStorage.getItem('BookData'));
+                return tableData;
+            }
+
+            function LoadTableData(items) {
+                if(!Array.isArray(items)){
+                    console.log("Array is Empty");
+                    return;
+                }
+                const table = document.getElementById("testBody");
+                items.forEach( item => {
+                    let row = table.insertRow();
+                    let name = row.insertCell(0);
+                    name.innerHTML = item.name;
+                    let total_count = row.insertCell(1);
+                    total_count.innerHTML = item.total_count;
+                    let author = row.insertCell(2);
+                    author.innerHTML = item.author;
+                    let description = row.insertCell(3);
+                    description.innerHTML = item.description;
+                    
+                    let edit = row.insertCell(4);
+                    edit.innerHTML = `<a href="form.html" onclick="location.href=this.href+'?key='+toString(item.name);return false;">Link</a>`;
+                    // console.log(key);
+                });
+            }
+
+
+
+            function ButtonToLocalStorage(){
+                var name = document.getElementById("name").value;
+                var total_count = document.getElementById("total_count").value;
+                var author = document.getElementById("author").value;
+                var description = document.getElementById("description").value;
+                
+                var array = [];
+                array.push({name: name, total_count: total_count, author: author, description: description});
+                console.log("button to local "+globalTableData);
+                SetTableData(array);
+
+                document.getElementById("name").value = "";
+                document.getElementById("total_count").value = "";
+                document.getElementById("author").value = "";
+                document.getElementById("description").value = "";
+
+                LoadTableData(GetTableData());
+            }
+            
+
+            try {
+                // localStorage.clear();
+                // SetTableData(items1);
+                // SetTableData(items2);
+                LoadTableData(GetTableData());
+            } catch (e) {
+                if (e instanceof DOMException && e.name === 'QuotaExceededError') {
+                    console.log("Quota Storage Exceeded");
+                }
+            }
+
+
+
+            
+
+
+            
+          </script>
+    </body>
+</html>
