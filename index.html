@@ -6,7 +6,7 @@
     </head>
     <body>
         <h1>Book</h1>
-        <a href="newBook.html">New book</a>
+        
         <table>
             <thead>
               <tr>
@@ -33,39 +33,35 @@
                 <th>total count</th>
                 <th>author</th>
                 <th>description</th>
-                <th>edit</th>
                 <th>delete</th>
               </tr>
             </thead>
             <tbody id="testBody"></tbody>
           </table>
           <script>
-            const items1 = [
-                { name: "Everlost", total_count: "5", author: "Neal Shusterman", description: "" },
-                { name: "Harry Potter and the Philosopher's Stone", total_count: "10", author: "J. K. Rowling", description: "The first installment of Harry Potter" },
-            ];
-            const items2 = [
-                { name: "Book1", total_count: "36", author: "AAA", description: "" },
-                { name: "Book2", total_count: "18", author: "BBB", description: "" },
-            ];
+            // const items1 = [
+            //     { name: "Everlost", total_count: "5", author: "Neal Shusterman", description: "" },
+            //     { name: "Harry Potter and the Philosopher's Stone", total_count: "10", author: "J. K. Rowling", description: "The first installment of Harry Potter" },
+            // ];
+            // const items2 = [
+            //     { name: "Book1", total_count: "36", author: "AAA", description: "" },
+            //     { name: "Book2", total_count: "18", author: "BBB", description: "" },
+            // ];
 
-            
 
-            
-
-            let globalTableData = [];
+            // let globalTableData = [];
             function SetTableData(items) {
-                globalTableData = GetTableData();
-                if(globalTableData == null){
-                    globalTableData = [];
+                var tableData = GetTableData();
+                if(tableData == null){
+                    tableData = [];
                 }
                     
                 
                 items.forEach( item => {
-                    globalTableData.push({name: item.name, total_count: item.total_count, author: item.author, description: item.description});
+                    tableData.push({name: item.name, total_count: item.total_count, author: item.author, description: item.description});
                 });
-                localStorage.setItem("BookData", JSON.stringify(globalTableData));
-                console.log("set data "+globalTableData);
+                localStorage.setItem("BookData", JSON.stringify(tableData));
+                
                 
                 // console.log(globalTableData);
             }
@@ -93,8 +89,8 @@
                     let description = row.insertCell(3);
                     description.innerHTML = item.description;
                     
-                    let edit = row.insertCell(4);
-                    edit.innerHTML = `<a href="form.html" onclick="location.href=this.href+'?key='+toString(item.name);return false;">Link</a>`;
+                    let delet = row.insertCell(4);
+                    delet.innerHTML = `<a href="form.html" onclick="location.href=this.href+'?key='+toString(item.name);return false;">delete</a>`;
                     // console.log(key);
                 });
             }
@@ -102,22 +98,35 @@
 
 
             function ButtonToLocalStorage(){
+
+                var localstorageArray = GetTableData();
+                
                 var name = document.getElementById("name").value;
                 var total_count = document.getElementById("total_count").value;
                 var author = document.getElementById("author").value;
                 var description = document.getElementById("description").value;
                 
                 var array = [];
+
+                if(localstorageArray != null){
+                    console.log("masuk1");
+                    localstorageArray.forEach((item, i) => {
+                    if(item.name == name){
+                        console.log("masuk2");
+                        console.log(item.total_count);
+                        item.total_count = total_count;
+                        item.author = author;
+                        item.description = description;
+                        localStorage.setItem("BookData", JSON.stringify(localstorageArray));
+                    }
+                });
+                }
+
                 array.push({name: name, total_count: total_count, author: author, description: description});
-                console.log("button to local "+globalTableData);
                 SetTableData(array);
-
-                document.getElementById("name").value = "";
-                document.getElementById("total_count").value = "";
-                document.getElementById("author").value = "";
-                document.getElementById("description").value = "";
-
-                LoadTableData(GetTableData());
+                
+                location.reload();
+                // LoadTableData(GetTableData());
             }
             
 

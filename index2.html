@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <link rel="stylesheet" href="style.css">
+        <title>Book Storage</title>
+    </head>
+    <body>
+        <h1>Book</h1>
+        <br><br>
+        <table id="myTable">
+            <thead>
+              <tr>
+                <th>name</th>
+                <th>total count</th>
+                <th>author</th>
+                <th>description</th>
+                <th>delete</th>
+              </tr>
+            </thead>
+            <tbody id="testBody"></tbody>
+          </table>
+          <span style="text-align: center;"><button onclick="AddData()">Add</button></span>
+          <script>
+LoadTableData();
+
+function LoadTableData() {
+  // if(!Array.isArray(items)){
+  //     console.log("Array is Empty");
+  //     return;
+  // }
+  const table = document.getElementById("testBody");
+  items.forEach( item => {
+      let row = table.insertRow();
+      
+      let name = row.insertCell(0);
+      name.innerHTML = `<input type="text" id="name" name="name" value="Doe">`; // item.name;
+      let total_count = row.insertCell(1);
+      total_count.innerHTML = `<input type="text" id="total_count" name="total_count" value="Doe">`
+      let author = row.insertCell(2);
+      author.innerHTML = `<input type="text" id="author" name="author" value="Doe">`
+      let description = row.insertCell(3);
+      description.innerHTML = `<input type="text" id="author" name="author value="Doe"">`
+      
+      let delet = row.insertCell(4);
+      delet.innerHTML = `<a href="form.html" onclick="location.href=this.href+'?key='+toString(item.name);return false;">delete</a>`;
+  });
+}
+
+function AddData(){
+  
+}
+          </script>
+    </body>
+</html>
