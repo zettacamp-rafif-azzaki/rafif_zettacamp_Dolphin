@@ -79,7 +79,10 @@ function date(creditDuration, priceTaxDiscount){
     let monthInt = date.getMonth();
     let year = date.getFullYear();
     
-    date.setDate(31);
+    var setDateTo = 30;
+    console.log(setDateTo);
+    date.setDate(setDateTo);
+    console.log(setDateTo);
     var lastDayOfMonth = new Date(date.getFullYear(), date.getMonth()+1, 0);
     var lastDayDate = date.getDate();
     let string;

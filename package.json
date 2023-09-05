@@ -1,0 +1,12 @@
+{
+  "name": "rafif_zettacamp_dolphin",
+  "version": "1.0.0",
+  "description": "",
+  "main": "JS_Day6.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "node JS_Day6.js"
+  },
+  "author": "",
+  "license": "ISC"
+}
