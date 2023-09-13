@@ -5,7 +5,7 @@
   "main": "payment_book.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "REST.js"
+    "dev": "node REST.js"
   },
   "author": "",
   "license": "ISC",

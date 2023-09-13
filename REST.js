@@ -99,24 +99,45 @@ app.post('/post',(req, res) => {
 // ========================================================================
 // Day_3
 
-app.post('/awaitLoop', (req,res)=>{
-
+app.post('/loopNonAwait', (req,res)=>{
   looping().then(
     function(value) {
-      // console.log(value);
-      res.status(401).send(value);
+      console.log("A");
+      res.status(401).send("Success");
     }
   );
 });
 
-async function looping(){
-  const promiseLoop = new Promise((resolve, reject) => {
-    setTimeout(() => {
-      resolve("foo");
-    }, 300);
-  });
+app.post('/loopAwait', (req,res)=>{
+  awaitLoopingFunction().then(
+    function(value) {
+      console.log("B");
+      res.status(401).send("Success");
+    }
+  );
+});
+
+async function awaitLoopingFunction(){
+  console.log("C");
+  let value = await looping();
+  console.log("D");
+  return value;
 }
 
+async function looping(){
+  let length = 5;
+  let i=1;
+  const promiseLoop = new Promise((resolve, reject) => {
+    setTimeout(function doSomething() {
+      resolve(console.log("i: " + i));
+      if(i<length){
+        setTimeout(doSomething, 2000);
+        i++;
+      }
+    }, 2000);
+  });
+  return promiseLoop;
+}
 
   app.listen(port, () => {
     console.log(`Server is running on http://localhost:${port}`);
