@@ -34,6 +34,8 @@ router.post('/', async (req, res) => {
     }
 })
 
+
+
 // Updating One
 router.patch('/:id', getBook, async(req, res) => {
 if(req.body.bookName != null){
@@ -69,6 +71,33 @@ try {
 } catch (error) {
     res.status(500).json({message:error.message})
 }
+})
+
+
+
+// Deleting many
+router.delete('/many', async (req, res) => {
+    try {
+        // const query = "{}"
+        await Book.deleteMany({})
+        
+        res.json({message:"deleted book"})
+    } catch (error) {
+        res.status(500).json({message:error.message})
+    }
+    })
+
+// Creating many
+router.post('/many', async (req, res) => {
+    
+    const arrayObj = req.body
+
+    try {
+        const result = await Book.insertMany(arrayObj, { ordered: true });
+        res.status(201).json(result)
+    } catch {
+        res.status(400).json({message: error.message})
+    }
 })
 
 async function getBook(req,res,next){

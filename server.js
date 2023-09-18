@@ -6,7 +6,7 @@ const mongoose = require('mongoose');
 const app = express();
 
 let port = 3003;
-mongoose.connect(process.env.DATABASE_URL, {useNewUrlParser:true})
+mongoose.connect(`${process.env.DATABASE_URL}${process.env.DATABASE}`, {useNewUrlParser:true, useUnifiedTopology:true})
 const db = mongoose.connection
 db.on('error', (error) => console.log(error))
 db.once('open', () => console.log('connected to database'))
