@@ -5,7 +5,8 @@ const bookshelfSchema = new mongoose.Schema({
     bookshelfName:{
         type:String,
         required:true
-    }
+    },
+    bookEmbedded: [{ type: mongoose.model('book').schema }]
 });
 
 module.exports = mongoose.model('bookshelf', bookshelfSchema);

@@ -56,6 +56,8 @@ router.post('/', async (req, res) => {
 
     var arrayObj = {bookid:ids}
 
+    // var allbooks = await Book.find({})
+
     try {
         //check if there is no 
         var bookshelf =  await BookShelf.find()
@@ -63,7 +65,8 @@ router.post('/', async (req, res) => {
             console.log(arrayObj);
             const AddOneID = new BookShelf({
                 bookid:ids[0],
-                bookshelfName:"All Book"
+                bookshelfName:"All Book",
+                bookEmbedded:await Book.find({})
             })
             const newBookshelf = await AddOneID.save()
             console.log(newBookshelf + " was added");
@@ -118,6 +121,87 @@ router.delete('/:id', async (req, res) => {
     }
 })
 
+// ElemMatch
+router.post('/ElemMatch', async (req, res) => {
+    // res.send('asd')
+    try {
+        const bookshelf = await BookShelf.findOne({ bookshelfName: "All Book" })
+          .populate({
+            path: 'bookid',
+            match: {
+              'publishedDate': {
+                $elemMatch: {
+                  publisher: req.body.publisher,
+                  year: req.body.year
+                }
+              }
+            }
+          })
+          
+    
+        if (!bookshelf) {
+          console.log("Bookshelf not found.");
+          return;
+        }
+    
+        // Filtered books will be in the `bookid` property of the bookshelf document
+        console.log(bookshelf.bookid);
+        res.send(bookshelf.bookid)
+      } catch (error) {
+        console.error(error);
+      }
+})
+
+
+router.patch('/filterArray', async (req, res) => {
+    // res.send('asd')
+    try {
+        
+        // Update the specific comment using arrayFilter
+        // BookShelf.updateOne(
+        //     {
+        //         "bookshelfName": "All Book",
+        //         "bookEmbedded.bookName": "Sherlock Holmes" // Filter by bookName
+        //     },
+        //     {
+        //         $set: {
+        //             "bookEmbedded.$[elem].genre": ["New Genre"] // Update the genre array
+        //         }
+        //     },
+        //     {
+        //         arrayFilters: [{"elem.bookName": "Sherlock Holmes"}]
+        //     }
+        // )
+
+        BookShelf.updateOne({'bookName':req.body.bookName},
+            {$set:{'genre.$[elem]':req.body.GenreToBeChange}},
+            {arrayFilters:[{elem:{$eq:req.body.ChangeGenreTo}}]}
+        )
+        res.send("success")
+
+      } catch (error) {
+        console.error(error);
+      }
+})
+
+router.post('/distinct', async (req, res) => {
+    // res.send('asd')
+    try {
+        const distinctGenres = await BookShelf.distinct("genre", {
+            "bookshelfName": "All Book",
+            "bookEmbedded.bookName": "Sherlock Holmes" // Filter by bookName
+        });
+
+        // const x = await Book.distinct("genre");
+
+        res.send(distinctGenres)
+        console.log(distinctGenres);
+      } catch (error) {
+        console.error(error);
+      }
+})
+
+
 // router.delete('deleteFromFirst/:id', async (req, res) => {
 //     try {
 //         // await res.bookshelf.deleteOne()
@@ -135,6 +219,9 @@ router.delete('/:id', async (req, res) => {
 //     }
 // })
 
+
+
+
 async function getBook(req,res,next){
     let selected_bookShelf
     try {
@@ -146,6 +233,8 @@ async function getBook(req,res,next){
     } catch (error) {
         return res.status(500).json({message:error.message})
     }
+
+    
 
     res.bookshelf = selected_bookShelf
     console.log(res.bookshelf);
