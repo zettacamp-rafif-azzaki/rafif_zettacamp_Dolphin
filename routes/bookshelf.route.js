@@ -129,51 +129,7 @@ router.post('/ElemMatch', async (req, res) => {
 })
 // =======================================================================================
 
-// project
-router.get('/project', async (req, res) => {
 
-    try {
-        // const project = await BookShelf.aggregate([
-        // {
-        //     $match:{"bookshelfName":"All Book"}
-        // },{
-        //     $project: req.body
-        // }
-
-        const project = await Book.aggregate([
-            {
-                $project: req.body
-            }
-    ])
-    res.send(project);
-    } catch (error) {
-    console.error(error);
-    }
-})
-
-// addFields
-router.get('/addFields', async (req, res) => {
-    
-    try {
-        // const project = await BookShelf.aggregate([
-        // {
-        //     $match:{"bookshelfName":"All Book"}
-        // },{
-        //     $addFields:req.body
-        // }
-
-        const project = await Book.aggregate([
-            {
-                $addFields:req.body
-            }
-
-    ])
-    // console.log(project);
-    res.send(project);
-    } catch (error) {
-    console.error(error);
-    }
-})
 
 // unwind
 router.get('/unwind', async (req, res) => {
@@ -207,6 +163,37 @@ router.get('/unwind', async (req, res) => {
     }
 })
 
+
+// Day6
+router.get('/Day6', async (req, res) => {
+    try {
+        const project = await BookShelf.aggregate([
+        {
+            $match:{"bookshelfName":"All Book"}
+        },{
+            $lookup: {
+                from: 'books',
+                localField: 'bookid',
+                foreignField: '_id',
+                as: 'populatedBooks'
+              }
+        },{
+            $project:{
+                bookEmbedded:0,
+                // _id:1,
+                bookid:0,
+                bookshelfName:0,
+                "populatedBooks.publishedDate":0,
+                "populatedBooks.genre":0,
+                __v:0
+            }
+        }
+    ])
+    res.send(project);
+    } catch (error) {
+    console.error(error);
+    }
+})
 
 
 

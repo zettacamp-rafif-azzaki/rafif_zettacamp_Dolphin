@@ -10,13 +10,6 @@ const { error } = require('console')
 router.get('/project', async (req, res) => {
 
     try {
-        // const project = await BookShelf.aggregate([
-        // {
-        //     $match:{"bookshelfName":"All Book"}
-        // },{
-        //     $project: req.body
-        // }
-
         const project = await Book.aggregate([
             {
                 $project: req.body
@@ -32,18 +25,10 @@ router.get('/project', async (req, res) => {
 router.get('/addFields', async (req, res) => {
     
     try {
-        // const project = await BookShelf.aggregate([
-        // {
-        //     $match:{"bookshelfName":"All Book"}
-        // },{
-        //     $addFields:req.body
-        // }
-
         const project = await Book.aggregate([
             {
                 $addFields:req.body
             }
-
     ])
     // console.log(project);
     res.send(project);
@@ -52,6 +37,40 @@ router.get('/addFields', async (req, res) => {
     }
 })
 
+// Day6: match, sort, lookup, concat
+router.get('/Day6', async (req, res) => {
+    const matchBody = req.body.match
+
+    try {
+        const project = await Book.aggregate([
+            {
+                $match:req.body.matchBody
+            },
+            {
+                $sort:req.body.sortBody
+            },
+            {
+                $project:{
+                    concatenated:{
+                        $concat:["$bookName", " (", "$author", ")"]
+                    },
+                    bookPrice:1
+                }
+            }
+    ])
+    res.send(project);
+    } catch (error) {
+    console.error(error);
+    }
+})
+
+,
+// genre:{
+//     $reduce:{
+//         input:["$genre"],
+//         initialValue:""
+//     }
+// }
 
 
 
