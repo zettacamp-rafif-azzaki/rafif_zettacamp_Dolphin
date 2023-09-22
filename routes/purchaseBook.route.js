@@ -5,6 +5,54 @@ const Book = require('../models/book.model')
 const { error } = require('console')
 
 
+// placeHolder
+// project
+router.get('/project', async (req, res) => {
+
+    try {
+        // const project = await BookShelf.aggregate([
+        // {
+        //     $match:{"bookshelfName":"All Book"}
+        // },{
+        //     $project: req.body
+        // }
+
+        const project = await Book.aggregate([
+            {
+                $project: req.body
+            }
+    ])
+    res.send(project);
+    } catch (error) {
+    console.error(error);
+    }
+})
+
+// addFields
+router.get('/addFields', async (req, res) => {
+    
+    try {
+        // const project = await BookShelf.aggregate([
+        // {
+        //     $match:{"bookshelfName":"All Book"}
+        // },{
+        //     $addFields:req.body
+        // }
+
+        const project = await Book.aggregate([
+            {
+                $addFields:req.body
+            }
+
+    ])
+    // console.log(project);
+    res.send(project);
+    } catch (error) {
+    console.error(error);
+    }
+})
+
+
 
 
 // Getting All

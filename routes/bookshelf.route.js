@@ -1,3 +1,4 @@
+// HATI-HATI URUTAN PENTING, TARUH /:id DIPALING BAWAH
 const express = require('express')
 const router = express.Router()
 const Book = require('../models/book.model')
@@ -8,15 +9,9 @@ const mongoose = require('mongoose');
 const bookshelfModel = require('../models/bookshelf.model')
 const { param } = require('./purchaseBook.route')
 
-
-router.get('/', async (req, res) => {
-    try {
-        const bookShelf = await BookShelf.find()
-        res.json(bookShelf)
-    } catch (error) {
-        res.status(500).json({ message: error.message }) //500 something wrong with the server
-    }
-})
+// =======================================================================================
+// already good
+// =======================================================================================
 // Read All
 router.get('/ReadAll', async (req, res) => {
     try {
@@ -26,12 +21,6 @@ router.get('/ReadAll', async (req, res) => {
         res.status(500).json({ message: error.message }) //500 something wrong with the server
     }
 })
-
-//Read One
-router.get('/:id', getBook, (req,res) => {
-    res.send(res.bookshelf)
-})
-
 // Create One
 router.post('/manual', async (req, res) => {
     const AddOneID = new BookShelf({
@@ -47,7 +36,6 @@ router.post('/manual', async (req, res) => {
         res.status(400).json({message: error.message})
     }
 })
-
 // Creating many
 router.post('/', async (req, res) => {
     
@@ -83,7 +71,7 @@ router.post('/', async (req, res) => {
         res.status(400).json({message: error.message})
     }
 })
-
+// update book on books not bookshelf
 router.patch('/', async (req, res) => {
     if(req.body.bookName != null){
         res.book.bookName = req.body.bookName;
@@ -109,18 +97,6 @@ router.patch('/', async (req, res) => {
         res.status(400).json({message:error.message})
     }
 })
-
-//delete bookshelf
-router.delete('/:id', async (req, res) => {
-    try {
-        await BookShelf.find({'_id':new mongoose.Types.ObjectId(req.params.id)}).deleteOne()
-
-        res.json({message:"deleted bookshelf"})
-    } catch (error) {
-        res.status(500).json({message:error.message})
-    }
-})
-
 // ElemMatch
 router.post('/ElemMatch', async (req, res) => {
     // res.send('asd')
@@ -151,27 +127,164 @@ router.post('/ElemMatch', async (req, res) => {
         console.error(error);
       }
 })
+// =======================================================================================
+
+// project
+router.get('/project', async (req, res) => {
+
+    try {
+        // const project = await BookShelf.aggregate([
+        // {
+        //     $match:{"bookshelfName":"All Book"}
+        // },{
+        //     $project: req.body
+        // }
+
+        const project = await Book.aggregate([
+            {
+                $project: req.body
+            }
+    ])
+    res.send(project);
+    } catch (error) {
+    console.error(error);
+    }
+})
+
+// addFields
+router.get('/addFields', async (req, res) => {
+    
+    try {
+        // const project = await BookShelf.aggregate([
+        // {
+        //     $match:{"bookshelfName":"All Book"}
+        // },{
+        //     $addFields:req.body
+        // }
+
+        const project = await Book.aggregate([
+            {
+                $addFields:req.body
+            }
+
+    ])
+    // console.log(project);
+    res.send(project);
+    } catch (error) {
+    console.error(error);
+    }
+})
+
+// unwind
+router.get('/unwind', async (req, res) => {
+    try {
+        const project = await BookShelf.aggregate([
+        {
+            $match:{"bookshelfName":"All Book"}
+        },{
+            $lookup: {
+                from: 'books', // The name of the referenced collection (in this case, 'books')
+                localField: 'bookid',
+                foreignField: '_id',
+                as: 'populatedBooks'
+              }
+        },{
+            $unwind: "$populatedBooks"
+        },{
+            $project:{
+                bookEmbedded:0,
+                _id:1,
+                bookid:0,
+                bookshelfName:0,
+                __v:0
+            }
+        }
+    ])
+    // console.log(project);
+    res.send(project);
+    } catch (error) {
+    console.error(error);
+    }
+})
 
 
+
+
+
+
+// =======================================================================================
+// GTFO from here, Add the code On the upside!!
+// =======================================================================================
+
+// router.delete('deleteFromFirst/:id', async (req, res) => {
+//     try {
+//         // await res.bookshelf.deleteOne()
+
+//         var id = await BookShelf.find({},{'_id':1})
+
+//         console.log(id);
+//         await BookShelf.updateMany(
+//             { '_id': await BookShelf.find({},{'_id':1})},
+//             { $pull: { bookid: { $in: [req.params.id] }} }
+//         )
+//         res.json({message:"deleted book"})
+//     } catch (error) {
+//         res.status(500).json({message:error.message})
+//     }
+// })
+
+//=================================================================================================
+async function getBook(req,res,next){
+    let selected_bookShelf
+    try {
+        selected_bookid = new mongoose.Types.ObjectId(req.params.id)
+        selected_bookShelf = await BookShelf.find({'_id':await BookShelf.findOne({},{'_id':1})}, {'bookid':selected_bookid}).populate('bookid')
+        if(selected_bookShelf == null){
+            return res.status(404).json({message:"cannot find book on bookshelf"})
+        }
+    } catch (error) {
+        return res.status(500).json({message:error.message})
+    }
+
+    
+
+    res.bookshelf = selected_bookShelf
+    console.log(res.bookshelf);
+    next()
+}
+
+
+router.get('/', async (req, res) => {
+    try {
+        const bookShelf = await BookShelf.find()
+        res.json(bookShelf)
+    } catch (error) {
+        res.status(500).json({ message: error.message }) //500 something wrong with the server
+    }
+})
+
+//delete bookshelf
+router.delete('/:id', async (req, res) => {
+    try {
+        await BookShelf.find({'_id':new mongoose.Types.ObjectId(req.params.id)}).deleteOne()
+
+        res.json({message:"deleted bookshelf"})
+    } catch (error) {
+        res.status(500).json({message:error.message})
+    }
+})
+
+//Read One
+router.get('/:id', getBook, (req,res) => {
+    res.send(res.bookshelf)
+})
+// =======================================================================================
+// FAILURE FUNCTION HERE
+// =======================================================================================
 router.patch('/filterArray', async (req, res) => {
     // res.send('asd')
     try {
         
-        // Update the specific comment using arrayFilter
-        // BookShelf.updateOne(
-        //     {
-        //         "bookshelfName": "All Book",
-        //         "bookEmbedded.bookName": "Sherlock Holmes" // Filter by bookName
-        //     },
-        //     {
-        //         $set: {
-        //             "bookEmbedded.$[elem].genre": ["New Genre"] // Update the genre array
-        //         }
-        //     },
-        //     {
-        //         arrayFilters: [{"elem.bookName": "Sherlock Holmes"}]
-        //     }
-        // )
 
         BookShelf.updateOne({'bookName':req.body.bookName},
             {$set:{'genre.$[elem]':req.body.GenreToBeChange}},
@@ -200,45 +313,5 @@ router.post('/distinct', async (req, res) => {
         console.error(error);
       }
 })
-
-
-// router.delete('deleteFromFirst/:id', async (req, res) => {
-//     try {
-//         // await res.bookshelf.deleteOne()
-
-//         var id = await BookShelf.find({},{'_id':1})
-
-//         console.log(id);
-//         await BookShelf.updateMany(
-//             { '_id': await BookShelf.find({},{'_id':1})},
-//             { $pull: { bookid: { $in: [req.params.id] }} }
-//         )
-//         res.json({message:"deleted book"})
-//     } catch (error) {
-//         res.status(500).json({message:error.message})
-//     }
-// })
-
-
-
-
-async function getBook(req,res,next){
-    let selected_bookShelf
-    try {
-        selected_bookid = new mongoose.Types.ObjectId(req.params.id)
-        selected_bookShelf = await BookShelf.find({'_id':await BookShelf.findOne({},{'_id':1})}, {'bookid':selected_bookid}).populate('bookid')
-        if(selected_bookShelf == null){
-            return res.status(404).json({message:"cannot find book on bookshelf"})
-        }
-    } catch (error) {
-        return res.status(500).json({message:error.message})
-    }
-
-    
-
-    res.bookshelf = selected_bookShelf
-    console.log(res.bookshelf);
-    next()
-}
 
 module.exports = router;
