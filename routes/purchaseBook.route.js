@@ -88,27 +88,55 @@ router.get('/pagination', async (req, res) => {
     }
 })
 
-router.get('/facet', async (req, res) => {
-    
+
+router.get('/paginationAndFacet', async (req, res) => {
+    const page = req.body.page || 1;
+    const perPage = 3;
+
+    var skip = (page-1) * perPage;
     try {
         const project = await Book.aggregate([
             {
                 $facet: {
-                    "CategorizeByAuthor":[{$group: { _id: {author:"$author"}, totalBook:{$sum:1}}}],
+                    "Pagination":[
+                        { $skip:skip },
+                        { $limit : perPage },
+                        {
+                            $project:{
+                                concatenated:{
+                                    $concat:["$bookName", " (", "$author", ")"]
+                                },
+                                bookPrice:1
+                            }
+                        }],
                     "SortByPrice":[
-                        {$sort:{ _id: 1, bookPrice:1 }}, 
+                        {$sort:{ bookPrice:1, _id: 1 }},
+                        
                         {$project:{
                                 concatenated:{
                                     $concat:["$bookName", " (", "$author", ")"]
                                 },
                                 bookPrice:1}
-                        }],
+                        },
+                        { $skip:skip },
+                        { $limit : perPage },],
+                    "CategorizeByAuthor":[
+                        
+                        {$group: { _id: {author:"$author"}, totalBook:{$sum:1}}},
+                        {$sort:{ author:1, _id: 1 }},
+                        { $skip:skip },
+                        { $limit : perPage }
+                    ],
                     "CategorizeByPublisher":[
                         {$unwind:"$publishedDate"},
-                        {$group: { _id: {publisher:"$publishedDate.publisher"}, totalBook:{$sum:1}}}
+                        {$group: { _id: {publisher:"$publishedDate.publisher"}, totalBook:{$sum:1}}},
+                        {$sort:{ publisher:1, _id: 1 }},
+                        { $skip:skip },
+                        { $limit : perPage }
                         ]
                 }
             }
+
     ])
     res.send(project);
     } catch (error) {
