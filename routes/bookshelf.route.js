@@ -127,10 +127,6 @@ router.post('/ElemMatch', async (req, res) => {
         console.error(error);
       }
 })
-// =======================================================================================
-
-
-
 // unwind
 router.get('/unwind', async (req, res) => {
     try {
@@ -162,9 +158,7 @@ router.get('/unwind', async (req, res) => {
     console.error(error);
     }
 })
-
-
-// Day6
+// Day6: match, lookup
 router.get('/Day6', async (req, res) => {
     try {
         const project = await BookShelf.aggregate([
@@ -194,6 +188,11 @@ router.get('/Day6', async (req, res) => {
     console.error(error);
     }
 })
+// =======================================================================================
+
+
+
+
 
 
 

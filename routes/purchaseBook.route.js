@@ -4,8 +4,9 @@ const router = express.Router()
 const Book = require('../models/book.model')
 const { error } = require('console')
 
-
-// placeHolder
+// =======================================================================================
+// already good
+// =======================================================================================
 // project
 router.get('/project', async (req, res) => {
 
@@ -20,7 +21,6 @@ router.get('/project', async (req, res) => {
     console.error(error);
     }
 })
-
 // addFields
 router.get('/addFields', async (req, res) => {
     
@@ -36,7 +36,6 @@ router.get('/addFields', async (req, res) => {
     console.error(error);
     }
 })
-
 // Day6: match, sort, lookup, concat
 router.get('/Day6', async (req, res) => {
     const matchBody = req.body.match
@@ -46,9 +45,34 @@ router.get('/Day6', async (req, res) => {
             {
                 $match:req.body.matchBody
             },
+            // {
+            //     $sort:req.body.sortBody
+            // },
             {
-                $sort:req.body.sortBody
-            },
+                $project:{
+                    concatenated:{
+                        $concat:["$bookName", " (", "$author", ")"]
+                    },
+                    bookPrice:1
+                }
+            }
+    ])
+    res.send(project);
+    } catch (error) {
+    console.error(error);
+    }
+})
+// =======================================================================================
+
+router.get('/pagination', async (req, res) => {
+    const page = req.body.page || 1;
+    const perPage = 3;
+
+    var skip = (page-1) * perPage;
+    try {
+        const project = await Book.aggregate([
+            { $skip:skip },
+            { $limit : perPage },
             {
                 $project:{
                     concatenated:{
@@ -64,16 +88,47 @@ router.get('/Day6', async (req, res) => {
     }
 })
 
-,
-// genre:{
-//     $reduce:{
-//         input:["$genre"],
-//         initialValue:""
-//     }
-// }
+router.get('/facet', async (req, res) => {
+    
+    try {
+        const project = await Book.aggregate([
+            {
+                $facet: {
+                    "CategorizeByAuthor":[{$group: { _id: {author:"$author"}, totalBook:{$sum:1}}}],
+                    "SortByPrice":[
+                        {$sort:{ _id: 1, bookPrice:1 }}, 
+                        {$project:{
+                                concatenated:{
+                                    $concat:["$bookName", " (", "$author", ")"]
+                                },
+                                bookPrice:1}
+                        }],
+                    "CategorizeByPublisher":[
+                        {$unwind:"$publishedDate"},
+                        {$group: { _id: {publisher:"$publishedDate.publisher"}, totalBook:{$sum:1}}}
+                        ]
+                }
+            }
+    ])
+    res.send(project);
+    } catch (error) {
+    console.error(error);
+    }
+})
 
 
 
+
+
+
+
+
+
+
+
+// =======================================================================================
+// put the code upside from here
+// =======================================================================================
 // Getting All
 router.get('/', async (req, res) => {
     try {
@@ -151,7 +206,7 @@ router.post('/many', async (req, res) => {
         res.status(400).json({message: error.message})
     }
 })
-
+// =======================================================================================
 async function getBook(req,res,next){
     let _getBook
     try {
@@ -168,5 +223,4 @@ async function getBook(req,res,next){
     console.log(res.book);
     next()
 }
-
 module.exports = router;
