@@ -13,12 +13,17 @@ db.once('open', () => console.log('connected to database'))
 
 
 app.use(express.json());
-const bookRouter = require('./routes/purchaseBook.route')
-app.use('/purchaseBook', bookRouter);
+// const bookRouter = require('./routes/purchaseBook.route')
+// app.use('/purchaseBook', bookRouter);
 
-const bookshelfRouter = require('./routes/bookshelf.route')
-app.use('/bookshelf', bookshelfRouter);
+// const bookshelfRouter = require('./routes/bookshelf.route')
+// app.use('/bookshelf', bookshelfRouter);
 
+const songRouter = require('./routes/song.route')
+app.use('/song', songRouter);
+
+const playlistRouter = require('./routes/playlist.route')
+app.use('/playlist', playlistRouter);
 
 app.listen(port, () => {
     console.log(`Server is running on http://localhost:${port}`);
